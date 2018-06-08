@@ -1,8 +1,9 @@
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
 -- cmano_helpers.lua
---------------------------------------------------------------------------------------------------------------------------------
--- This is a collection of Lua helper/utility functions for Command: Modern Air/Naval Operations
+-- See https://github.com/rjstone/cmano-lua-helpers for the latest version.
+--
+-- This is a collection of Lua helper/convenience/utility functions for Command: Modern Air/Naval Operations
 --------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------
 
@@ -111,11 +112,11 @@ function ImprovedRandomseed(quality)
     if quality == nil then quality=10 end
     -- os.time() removes dependency on how long the software has been running currently
     -- os.clock() provides miliseconds, unlike os.time()
-    -- we "chain" this with previous math.random() output
+    -- we "chain" this with previous math.random() output to retain any accumulated entropy
     -- and "stir" a little by repeating more than once, though not much because the execution time
     -- probably doesn't vary much between calls and spending too much time will be a waste unless we want
     -- to spend several seconds doing this.
-    math.randomseed(os.time() + math.random(90071992547)) -- preserve some previous seeding if there was any
+    math.randomseed(os.time() + math.random(90071992547)) -- preserve some previous entropy if there was any
     for i = 1, quality do
         -- Retain some previous PRNG state while adding a little jitter entropy, but not much.
         -- Jitter entropy comes from thread preemption, interrupt handing, and stuff like that in the OS that is
@@ -129,6 +130,7 @@ end
 -- Get Random Numbers
 -- Written Kevin Kinscherf 12-29-2016
 -- Rewritten and min/max functionality added by NimrodX
+-- This is for generating a single decent quality random number.
 -- Return value is an integer.
 -- Warning! This is SLOW so should not be used to generate lots of random numbers in a loop!
 -- If you need more than one or two "really good" random numbers in a given script, just call ImprovedRandomseed()
@@ -167,17 +169,18 @@ end
 -- Modified by Wayne Stiles (2016-11-14)
 -- Improved by NimrodX
 -- Usage example:
---         -- Draw a 30nmi radius circle for side "US" around Atlanta with 12 points labeled ATL-1 through ATL-12 like a clock.
---         DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30, 12, "ATL-", 1)
---         -- Same thing but start numbering the points at 10 so you get ATL-10 through ATL-21.
---         DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30, 12, "ATL-", 10)
+--      -- Draw a 30nmi radius circle for side "US" around Atlanta with 12 points labeled ATL-1 through ATL-12 like a clock.
+--      DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30, 12, "ATL-", 1)
+--      -- Same thing but start numbering the points at 10 so you get ATL-10 through ATL-21.
+--      DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30, 12, "ATL-", 10)
 --      -- A 'firstindex' of nil or not specified means don't number label the reference points. So they all have the same name.
---         DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30, 12, "ATL", nil)
+--      DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30, 12, "ATL", nil)
 --      -- Last three arguments are optional and have default values if not specified.
---         DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30)
--- DrawRPCircle() returns a list of ReferencePoint wrappers so you can modify them if desired (lock, unhighlight, etc). Example:
---        local rps = DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 5, 12, "ATL-")
---        ApplyToTableItems(rps, function(rp) rp.locked=true; rp.highlighted=false; end)
+--      DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 30)
+--      -- DrawRPCircle() returns a list of ReferencePoint wrappers so you can modify them if desired (lock, unhighlight, etc).
+--      -- Example:
+--      local rps = DrawRPCircle("US", {latitude='33.761939187143', longitude='-84.3825536773889'}, 5, 12, "ATL-")
+--      ApplyToTableItems(rps, function(rp) rp.locked=true; rp.highlighted=false; end)
 --
 function DrawRPCircle(sidename, location, radius, numpts, nameprefix, firstindex)
     if numpts == nil then numpts = 12 end
@@ -219,8 +222,8 @@ end
 
 -- Draw circle around unit, specifying a unit by name rather than location coordinates
 -- Usage example:
---         -- Draw 5nmi radius circle around "US" unit named "My Ship" with 12 points labeled B-1 to B-12
---        local rpoints = DrawRPCircleAroundUnit("US", "My Ship", 5, 12, "B-", 1)
+--      -- Draw 5nmi radius circle around "US" unit named "My Ship" with 12 points labeled B-1 to B-12
+--      local rpoints = DrawRPCircleAroundUnit("US", "My Ship", 5, 12, "B-", 1)
 --      -- Set all to locked, unhighlighted, and rotating relative to myShip
 --      ApplyToTableItems(rpoints, function(rp) rp.locked=true; rp.highlighted=false; rp.relativeto=myShip; rp.bearingtype=1; end)
 --
@@ -232,10 +235,10 @@ end
 
 -- Get all reference points for a side with a given prefix and a given range of numbers after the prefix.
 -- Example usage:
---        -- Get all reference points for "US" named B-1 through B-12.
---        local rpoints = GetReferencePointsByPrefix("US", "B-", 1, 12)
+--      -- Get all reference points for "US" named B-1 through B-12.
+--      local rpoints = GetReferencePointsByPrefix("US", "B-", 1, 12)
 --      -- Unlock and highlight all of them.
---        ApplyToTableItems(rpoints, function(rp) rp.locked=false; rp.highlighted=true; end)
+--      ApplyToTableItems(rpoints, function(rp) rp.locked=false; rp.highlighted=true; end)
 function GetReferencePointsByPrefix(sidename, prefix, firstindex, lastindex)
     local area = {}
     for i = firstindex, lastindex do
@@ -305,8 +308,8 @@ end
 -- Written by Kevin Kinscherf (2016-12-9)
 -- "Functionized" by NimrodX
 -- Usage example:
---         AssignUnitsToMission("Redcock #", 1, 6, "Strike") -- Assigns "Redcock #1" through "Redcock #6" to mission named "Strike"
---         AssignUnitsToMission("Redcock #", 7, 10, "Decoy") -- Assigns "Redcock #7" through "Redcock #10" to mission named "Decoy"
+--      AssignUnitsToMission("Redcock #", 1, 6, "Strike") -- Assigns "Redcock #1" through "Redcock #6" to mission named "Strike"
+--      AssignUnitsToMission("Redcock #", 7, 10, "Decoy") -- Assigns "Redcock #7" through "Redcock #10" to mission named "Decoy"
 --
 function AssignUnitsToMission(nameprefix, startcount, endcount, missioname)
     for i = startcount, endcount do
@@ -497,7 +500,7 @@ end
 -- To check this level constantly there must be a trigger condition such as one based on time that checks
 -- every 15 minutes. So call this in the action for that repeatable event.
 -- Example usage:
---         RefuelUnitIfLow("Civilian", "Jumbo Jet", 22000) -- refuel to max if fuel gets below 22,000
+--      RefuelUnitIfLow("Civilian", "Jumbo Jet", 22000) -- refuel to max if fuel gets below 22,000
 -- Defaults to airplane fuel but a different fuel type can be set as the 4th argument.
 -- You could also just copy this and rewrite it to handle any other conditions you need.
 --
