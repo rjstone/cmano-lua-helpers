@@ -40,15 +40,15 @@ ScenEdit_SetEventAction(event.guid, {mode='add', name='Load Lua Helpers'})
 * Now, open up **Editor->Event Editor->Actions**, edit the "Load Lua Helpers" action, copy the whole
 	contents of the file `cmano_helpers.lua` to the clipboard (load in notepad.exe or a better text editor, Ctrl-A, Ctrl-C),
   and paste it into the "Load Lua Helpers" script editor (click text area, right-click Select All, Ctrl-V).
-		
+
 * Save the scenario, then reload the scenario from the file.
-		
+
 * After you do this, every Lua script that runs in the scenario should be able to use every function
   in this file.
 
 You only need to do this process once for every new scenario. If you need to update the library of functions
-for your scenario, just edit the "Load Lua Helpers" Action and copy/paste the new file, make one-off edits,
-or whatever you need to do. Then save the scenario and load it from the file again.
+for your scenario, just use **Editor->Event Editor->Actions** again and edit the "Load Lua Helpers" Action,
+copy/paste the new file, make one-off edits, or whatever you need to do. Then save the scenario and load it from the file again.
 
 # Builder Functions: `cmano_builders.lua`
 
@@ -60,31 +60,42 @@ Anyone can contribute if they have something useful to add! Let me know and I'll
 your own updates. **But, this is on one condition!** You must adhere to the following very simple and short code style
 "guide" so we can try to keep this as clean looking as possible.
 
+**If you don't want to deal with github...** Just go to https://gist.github.com/ then paste your code snippet there and message
+me somehow (discord, etc) and I'll add it (possibly after editing it to match style).
+
 ### Indenting
 
 * Indents are 4 spaces (per level)
 * Use "soft" tabs (indents of four space characters) not "hard" tabs (tab characters). In other words, convert all tab
 characters to spaces when you save. Various text editors will help you manage your tabs as spaces like this.
 
-### Spacing
+### Line Spacing
 
-* Two lines between function definitions
-* Three lines between "sections"
+* **Single optional blank line spacing** inside functions anywhere you feel like visually separating parts of the
+  function. For example before and after loops. This is totally optional and up to you, just avoid using two or more blank
+  lines in a row to space things out. In other words, avoid double spacing inside functions.
+* **Double blank line spacing** between function definitions, unless the functions are a very closely related group like
+  `SetSidesFriendly()`, `SetSidesHostile()`, etc. In this cases just space them apart with a single blank line.
+* **Triple blank line spacing** between "sections"
 
 ### Coments
 
-* Just try to maintain the look of the section dividers etc.
+* Just try to maintain the look and the spacing of the section dividers etc.
 
 ### Function Names
 
+* Start with capital letter.
 * Capitalize every word.
 * No spaces between words.
-* This naming style is called Camel Case with initial capital letters.
+* This naming style is called Camel Case with initial capital letters and mimics the convention of the CMANO Lua API, but without the
+  `ScenEdit_` prefix, etc.
 * Example: `ThisIsMyCoolFunction()`
 
-### Variable and Argument Names 
+### Variable and Argument Names
 
-* Always start with a lower case letter, but other than that camel case etc doesn't matter.
+* **Always start with a lower case letter**, but other than that camel case etc doesn't matter.
 * Use descriptive argument names especially like `DrawRPCircle(sidename, location, radius, numpts, nameprefix, firstindex)`
-  and NOT `DrawRPCircle(s, x, a2, r1, b, c)` since nobody will understand that.
-* Do not start variable names or argument names with a capital letter!
+  and NOT `DrawRPCircle(s, x, a2, r1, b, c)` since nobody will understand that without digging into the code.
+* Do not start variable names or argument names with a capital letter! In short, just always start with a lower case letter.
+* Good examples: `foobar`, `foo_bar`, or `fooBar`
+* Bad examples: `FooBar`, `Foobar`
