@@ -420,19 +420,43 @@ end
 
 
 
+
 --------------------------------------------------------------------------------------------------------------------------------
 -- Posture Helper Functions
 --------------------------------------------------------------------------------------------------------------------------------
 
 
--- Mutual posture change.
-function ChangePostureBetweenTwoSides(sideOne,sideTwo,postureOne,postureTwo)
+-- See Contact Helper Functions above for posture codes
+function SetSidePostures(sideOne,sideTwo,postureOne,postureTwo)
     ScenEdit_SetSidePosture(sideOne, sideTwo, postureOne)
     ScenEdit_SetSidePosture(sideTwo, sideOne, postureTwo)
 end
 
--- Also see Contact Helper Functions
 
+-- Set two sides to have the same postures between each other
+-- See Contact Helper Functions above for posture codes
+function SetMutualSidePosture(sideOne, sideTwo, posture)
+    ScenEdit_SetSidePosture(sideOne, sideTwo, posture)
+    ScenEdit_SetSidePosture(sideTwo, sideOne, posture)
+end
+
+
+-- Even easier convenience functions with more obvious sementics
+function SetSidesFriendly(sideOne, sideTwo)
+    ScenEdit_SetSidePosture(sideOne, sideTwo, 'F')
+end
+
+function SetSidesHostile(sideOne, sideTwo)
+    ScenEdit_SetSidePosture(sideOne, sideTwo, 'H')
+end
+
+function SetSidesNeutral(sideOne, sideTwo)
+    ScenEdit_SetSidePosture(sideOne, sideTwo, 'N')
+end
+
+function SetSidesUnfriendly(sideOne, sideTwo)
+    ScenEdit_SetSidePosture(sideOne, sideTwo, 'U')
+end
 
 
 --------------------------------------------------------------------------------------------------------------------------------
