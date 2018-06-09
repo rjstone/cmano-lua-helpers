@@ -70,18 +70,15 @@ clicking Run. Read through the file to find out what functions are available,
 and see the usage examples.
 
 This may seem like too much trouble to some people, and it is for just adding a
-few units (which can easily be done manually). But for adding large numbers of
-units such as an entire Carrier Battle Group or an airbase with all of its
-magazines, runways, taxiways, hangars, facilities, and magazines, or changing
-something about one of the large groups of units, such as adding x number of
-loadouts worth of weapons to an airbase, this can save you 100s of
-clicks on GUI controls and lots of time.
+few units (which can easily be done manually). But for adding or modifying large
+numbers of units such as an entire Carrier Battle Group or an airbase with all
+of its magazines, runways, taxiways, hangars, facilities, and magazines, this
+can save you 100s of clicks on GUI controls and lots of time.
 
-* Warning: in Build 998.9 and probably before, if you are using the Steam
-version of the game launched from Steam, or you've launched it from
-autorun.exe, then Lua scripts run from `ScenEdit_RunScript()` must go in  the
-`[CMANO Game Folder]/GameMenu_CMANO/Lua` directory instead because that's
-where the "current directory" used by Lua is when launched in this way.
+Anyone using this should definitely see **blh42's [.INST file
+library](http://www.matrixgames.com/forums/tm.asp?m=3547843)** ([google
+drive](https://drive.google.com/drive/folders/0B2ZVdo4JnhUBVUMtUV9pS2xrcTg))
+with lots of easy imports of large numbers of units.
 
 It's possible that in some scenarios you *might* want to use some of the builder
 functions to add and remove units during gameplay. If so, just add the
@@ -89,6 +86,12 @@ functions to add and remove units during gameplay. If so, just add the
 Helper Functions. My recommendation would be that you create a separate Action
 called "Load Lua Builders" so you can update the code separately rather than
 trying to paste multiple files into the same Lua Script Action.
+
+* Warning: in Build 998.9 and probably before, if you are using the Steam
+version of the game launched from Steam, or you've launched it from
+autorun.exe, then Lua scripts run from `ScenEdit_RunScript()` must go in  the
+`[CMANO Game Folder]/GameMenu_CMANO/Lua` directory instead because that's
+where the "current directory" used by Lua is when launched in this way.
 
 # Contributing to the Library
 
@@ -140,6 +143,7 @@ Various text editors will help you manage your tabs as spaces like this.
 
 # Other Resources
 
+* **blh42's [.INST file library](http://www.matrixgames.com/forums/tm.asp?m=3547843)** ([google drive](https://drive.google.com/drive/folders/0B2ZVdo4JnhUBVUMtUV9pS2xrcTg))
 * [Command Lua Documentation](https://commandlua.github.io/) -  https://commandlua.github.io/
 * [Official CMANO Lua Forum](http://www.matrixgames.com/forums/tt.asp?forumid=1681)
 * [Official CMANO Forum](http://www.matrixgames.com/forums/tt.asp?forumid=1154)
