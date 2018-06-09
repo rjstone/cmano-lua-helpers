@@ -5,21 +5,21 @@ by Matrix/Slitherine/WarfareSims. This long name is abbreviated as "CMANO" by pl
 
 There are two main files in this repo:
 
-* **Helper** functions (`cmano_helpers.lua`) - These are intended to be added to the scenario and defined when the scenario
-loads. These fuctions are actually used in scenario Action and Condition Lua scripts used in Events.
-* **Builder** functions (`cmano_builders.lua`, not available yet) - These are *NOT intended to be included* as code in a scenario but
-rather executed manually from the Lua Console as macros to aid in scenario creation. They are useful for automating parts of
-scenario creation while editing but not intended to be executed inside scenario Actions.
+* **Helper** functions (`cmano_helpers.lua`) - These are intended to be added to
+  the scenario and defined when the scenario loads. These fuctions are actually
+  used in scenario Action and Condition Lua scripts used in Events.
+
+* **Builder** functions (`cmano_builders.lua`) - Warning! Very incomplete right now. These are *NOT intended to be included* as code in a scenario but rather executed manually from the Lua Console as macros to aid in scenario creation. They are useful for automating parts of scenario creation while editing but not intended to be executed inside scenario Actions.
 
 More details below.
 
 # Helper Functions: `cmano_helpers.lua`
 
-These are convenience functions written by various people (sometimes even me) to aid with writing the little Lua scripts
-used in CMANO.
+These are convenience functions written by various people (sometimes even me) to
+aid with writing the little Lua scripts used in CMANO.
 
-For full info on how to include the functions in your scenario see the comments at the top of the file, but here's the
-short version:
+For the most current full info on how to include the functions in your scenario
+see the comments at the top of the file, but here's the "short" version:
 
 * Create a new scenario or load an existing one that you want to add the library to.
 
@@ -34,25 +34,61 @@ ScenEdit_SetAction({mode='add',type='LuaScript',name='Load Lua Helpers',
 ScenEdit_SetEventAction(event.guid, {mode='add', name='Load Lua Helpers'})
 ```
 
-* As you might guess, doing the above can also be done manually in the GUI but executing the code above in the Lua
-  console will save you time and lots of clicking.
+* As you might guess, doing the above can also be done manually in the GUI but
+executing the code above in the Lua console will save you time and lots of
+clicking.
 
-* Now, open up **Editor->Event Editor->Actions**, edit the "Load Lua Helpers" action, copy the whole
-	contents of the file `cmano_helpers.lua` to the clipboard (load in notepad.exe or a better text editor, Ctrl-A, Ctrl-C),
-  and paste it into the "Load Lua Helpers" script editor (click text area, right-click Select All, Ctrl-V).
+* Now, open up **Editor->Event Editor->Actions**, edit the "Load Lua Helpers"
+action, copy the whole contents of the file `cmano_helpers.lua` to the clipboard
+(load in notepad.exe or a better text editor, Ctrl-A, Ctrl-C), and paste it into
+the "Load Lua Helpers" script editor (click text area, right-click Select All,
+Ctrl-V).
 
 * Save the scenario, then reload the scenario from the file.
 
-* After you do this, every Lua script that runs in the scenario should be able to use every function
-  in this file.
+* After you do this, every Lua script that runs in the scenario should be able
+to use every function in this file.
 
-You only need to do this process once for every new scenario. If you need to update the library of functions
-for your scenario, just use **Editor->Event Editor->Actions** again and edit the "Load Lua Helpers" Action,
-copy/paste the new file, make one-off edits, or whatever you need to do. Then save the scenario and load it from the file again.
+You only need to do this process once for every new scenario. If you need to
+update the library of functions for your scenario, just use **Editor->Event
+Editor->Actions** again and edit the "Load Lua Helpers" Action, copy/paste the
+new file, make one-off edits, or whatever you need to do. Then save the scenario
+and load it from the file again to reload the code.
 
 # Builder Functions: `cmano_builders.lua`
 
-Not added or documented yet. Stay tuned etc....
+Place the `cmano_builders.lua` file in the `[CMANO Game Folder]/Lua` directory (*
+see note) and you will be able to load it in the **Lua console** like this:
+
+```lua
+ScenEdit_RunScript("cmano_builders.lua")
+```
+
+Once you do that, you can invoke the "macro" functions by just typing the name
+of the function you want with the arguments you want into the Lua console and
+clicking Run. Read through the file to find out what functions are available,
+and see the usage examples.
+
+This may seem like too much trouble to some people, and it is for just adding a
+few units (which can easily be done manually). But for adding large numbers of
+units such as an entire Carrier Battle Group or an airbase with all of its
+magazines, runways, taxiways, hangars, facilities, and magazines, or changing
+something about one of the large groups of units, such as adding x number of
+loadouts worth of weapons to an airbase, this can save you 100s of
+clicks on GUI controls and lots of time.
+
+* Warning: in Build 998.9 and probably before, if you are using the Steam
+version of the game launched from Steam, or you've launched it from
+autorun.exe, then Lua scripts run from `ScenEdit_RunScript()` must go in  the
+`[CMANO Game Folder]/GameMenu_CMANO/Lua` directory instead because that's
+where the "current directory" used by Lua is when launched in this way.
+
+It's possible that in some scenarios you *might* want to use some of the builder
+functions to add and remove units during gameplay. If so, just add the
+`cmano_builders.lua` to a Scenario Loaded event action as described above for
+Helper Functions. My recommendation would be that you create a separate Action
+called "Load Lua Builders" so you can update the code separately rather than
+trying to paste multiple files into the same Lua Script Action.
 
 # Contributing to the Library
 
@@ -61,13 +97,15 @@ your own updates. **But, this is on one condition!** You must adhere to the foll
 "guide" so we can try to keep this as clean looking as possible.
 
 **If you don't want to deal with github...** Just go to https://gist.github.com/ then paste your code snippet there and message
-me somehow (discord, etc) and I'll add it (possibly after editing it to match style).
+me somehow (discord, etc), or use some other way of sneding me your code
+and I'll add it (possibly after editing it to match style).
 
 ### Indenting
 
 * Indents are 4 spaces (per level)
-* Use "soft" tabs (indents of four space characters) not "hard" tabs (tab characters). In other words, convert all tab
-characters to spaces when you save. Various text editors will help you manage your tabs as spaces like this.
+* Use "soft" tabs (indents of four space characters) not "hard" tabs (tab
+characters). In other words, convert all tab characters to spaces when you save.
+Various text editors will help you manage your tabs as spaces like this.
 
 ### Line Spacing
 
@@ -99,3 +137,12 @@ characters to spaces when you save. Various text editors will help you manage yo
 * Do not start variable names or argument names with a capital letter! In short, just always start with a lower case letter.
 * Good examples: `foobar`, `foo_bar`, or `fooBar`
 * Bad examples: `FooBar`, `Foobar`
+
+# Other Resources
+
+* [Command Lua Documentation](https://commandlua.github.io/) -  https://commandlua.github.io/
+* [Official CMANO Lua Forum](http://www.matrixgames.com/forums/tt.asp?forumid=1681)
+* [Official CMANO Forum](http://www.matrixgames.com/forums/tt.asp?forumid=1154)
+* [Unofficial CMANO Discord Server](https://discord.gg/dyQDesj)
+* [CMANO at WarefareSims](http://www.warfaresims.com/?page_id=1101)
+* [CMANO Page on Steam](https://store.steampowered.com/app/321410)

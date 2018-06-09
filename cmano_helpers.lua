@@ -64,6 +64,14 @@ go in  the [CMANO Game Folder]/GameMenu_CMANO/Lua directory instead.
 
 
 
+-- Shortcut for loading the Lua Builders file.
+-- Intended to be used only in the Lua console once you've loaded cmano_helpers.lua somehow.
+-- This assumes you already put it in your Lua directory. See the top of the cmano_builders.lua file for full instructions.
+function LoadBuilders()
+    ScenEdit_RunScript("cmano_builders.lua")
+end
+
+
 --------------------------------------------------------------------------------------------------------------------------------
 -- Table Helper Functions
 --------------------------------------------------------------------------------------------------------------------------------
